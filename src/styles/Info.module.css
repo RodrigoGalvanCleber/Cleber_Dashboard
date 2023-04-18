@@ -1,0 +1,49 @@
+.cardStyle {
+  min-width: 280px;
+  max-width: 400px;
+  max-height: 220px;
+  min-height: 0;
+  height: auto;
+  border: 0;
+  box-shadow: rgba(0, 0, 0, 0.3) 5px 5px 8px;
+  flex-shrink: 1;
+  flex-grow: 1;
+}
+
+.cardRowStyle {
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  flex-wrap: nowrap;
+}
+
+.labelPlacaStyle {
+  font-size: calc(0.5em + 0.5vw);
+  font-weight: bolder;
+  width: 200px;
+  max-width: 200px;
+}
+
+.rowLineaStyle {
+  height: auto;
+  max-height: 80%;
+}
+
+.labelLineaStyle {
+  font-size: calc(0.5em + 0.5vw);
+  font-weight: bolder;
+  max-height: 88%;
+  width: 220px;
+  max-width: 220px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; /* start showing ellipsis when 3rd line is reached */
+  white-space: pre-wrap; /* let the text wrap preserving spaces */
+}
+
+.colStyle {
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: center;
+}
