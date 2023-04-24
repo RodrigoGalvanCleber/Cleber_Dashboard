@@ -1,76 +1,85 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Layout, Row, Carousel, Col, message } from "antd";
+import { Layout, Row, Carousel, Col, message } from "antd"; //Libreria de componentes
 import ContainerCards from "@/Components/ContainerCards";
 import InfoCard from "@/Components/InfoCard";
 import { useEffect, useState } from "react";
-import StepsHeader from "@/Components/StepsHeader";
-import { useRouter } from "next/router";
-import useSWR from "swr";
+import StepsHeader from "@/Components/StepsHeader"; 
+import { useRouter } from "next/router"; //Next.js
+import useSWR from "swr"; //Libreria para actualizar datos cada x cantidad de tiempp
 
 const { Header, Content } = Layout;
 
 export default function Home({ initialData = [] }) {
-  async function fetcher(url) {
-    messageApi.open({
-      key: "datos",
-      style: { fontSize: "calc(0.5rem + 0.5vw)" },
-      type: "loading",
-      content: "Actualizando datos..",
-      duration: 0,
-    });
-    try {
-      setDate(new Date().toLocaleString());
-      const result = await fetch(url)
-        .then((r) => r.json())
-        .then((data) => data);
-      messageApi.destroy("datos");
-      messageApi.success({
-        key: "datosActualizados",
-        style: { fontSize: "calc(0.5rem + 0.5vw)" },
-        type: "loading",
-        content: "Datos actualizados correctamente.",
-        duration: 2.5,
-      });
-
-      return result;
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  const { data } = useSWR(
-    `https://hook.integromat.com/qwyael74yxsj3ahtyq58b9sye63ly8ro`,
-    fetcher,
-    {
-      initialData,
-      refreshInterval: 60000,
-    }
-  );
-  const router = useRouter();
-  //Use states
+  const [agencia, setAgencia] = useState(null);//ID de agencia en url
+  const router = useRouter(); 
   const [dataCards, setData] = useState([]); //Datos de tarjetas de carrusel
   const [json, setJson] = useState([]); //Json de agencia
   const [date, setDate] = useState(); //Fecha actualizacion
   const [procesoCount, setProcesoCount] = useState(0); //Counter de tarjetas proceso
   const [terminadoCount, setTerminadoCount] = useState(0); //Counter tarjetas terminado
   const [pagadoCount, setPagadoCount] = useState(0); //Counter tarjetas pagado
-  const [messageApi, contextHolder] = message.useMessage();
+  const [messageApi, contextHolder] = message.useMessage(); //Variable que controla mensajes a desplegar
 
+  //Fetcher para actualizar los datos cada x cantidad de tiempo
+  async function fetcher(url) {
+    //Si la agencia (ID en url) no es null
+    if(agencia !== null){
+      //Mensaje de datos cargando
+      messageApi.open({
+        key: "datos",
+        style: { fontSize: "calc(0.5rem + 0.5vw)" },
+        type: "loading",
+        content: "Actualizando datos..",
+        duration: 0,
+      });
+      try {
+        setDate(new Date().toLocaleString()); //Actualizar la fecha
+        //Regresar datos de json
+        const result = await fetch(url)
+          .then((r) => r.json())
+          .then((data) => data);
+        //Mensaje de datos recuperados
+        messageApi.destroy("datos");
+        messageApi.success({
+          key: "datosActualizados",
+          style: { fontSize: "calc(0.5rem + 0.5vw)" },
+          type: "loading",
+          content: "Datos actualizados correctamente.",
+          duration: 2.5,
+        });
+        return result;  //Retornar el json con todos registros a enseñar
+      } catch (e) {
+        console.log(e);
+      }
+   }
+  }
+
+  //Metodo fetcher corre cada x cantidad de tiempo con liga a id de agencia y fecha
+  const { data } = useSWR(
+    `https://hook.integromat.com/evhatg54q5yx0vhj6aw0c3yo492w62ck?IdAgencia=${agencia}&Fecha=2022-03-02`,
+    fetcher,
+    {
+      initialData,
+      refreshInterval: 60000,
+    }
+  );
+
+  //Construir los contenedores cada vez que se cambia la variable
   useEffect(() => {
     constructArray();
   }, [data]);
 
-  useEffect(() => {
+  //Esperar al router para  id de agencia
+  useEffect( () => {
     //Esperar a que router este listo
     if (!router.isReady) return;
     //Fetch de la agencia y su look
     getAgencia();
   }, [router.isReady]);
 
-  //Construir el carrusel
+  //Construir el carrusel 
   async function constructArray() {
-    console.log(new Date().toLocaleString());
     if (data != undefined) {
       const containers = []; //Carruseles
       //Contar cuanto de cada tarjeta hay
@@ -85,21 +94,24 @@ export default function Home({ initialData = [] }) {
         containers.push(
           <ContainerCards key={i}>
             {chunk.map((card, j) => {
-              if (card.Estado_Orden === "proceso") {
+              if (card.Estado_Orden === "En proceso") {
                 pCount += 1;
-              } else if (card.Estado_Orden === "terminado") {
+              } else if (card.Estado_Orden === "Terminada") {
                 tCount += 1;
-              } else if (card.Estado_Orden === "pagado") {
+              } else if (card.Estado_Orden === "Pagada") {
                 pgCount += 1;
               }
               return (
+                //Props contienen datos de cada registro
                 <InfoCard
-                  key={card.Folio_Orden_Reparacion}
-                  proceso={card.Estado_Orden}
-                  orden={card.Folio_Orden_Reparacion}
+                  key={card.NumOS}
+                  proceso={card.Clasificacion}
+                  orden={card.NumOS}
                   linea={card.Linea}
-                  placa={card.Placas}
+                  placa={card.Placa}
                   color={card.Color}
+                  porcentaje={card.PorcentajeAvance}
+                  pagada={card.Pagada}
                 ></InfoCard>
               );
             })}
@@ -117,8 +129,10 @@ export default function Home({ initialData = [] }) {
     }
   }
 
+  //Obtener la agencia del url
   async function getAgencia() {
     let error = false;
+    //Mensaje de obtener datos
     messageApi.open({
       key: "agencia",
       style: { fontSize: "calc(0.5rem + 0.5vw)" },
@@ -128,13 +142,16 @@ export default function Home({ initialData = [] }) {
     });
     //Obtener agencia mediante el id en el URL
     const { q } = router.query;
+    setAgencia(q); //Set de la agenicia para url de webhook
     try {
+      //Obtener datos de agencia
       const res = await fetch(
         `https://hook.integromat.com/sx1pcu1f43nxofq0i88cxpei02t7gc69?IdAgencia=${q}`
       );
       let data = await res.json();
-      setJson(data);
+      setJson(data); //Json de agencia
     } catch (e) {
+      //Mensaje de error
       error = true;
       messageApi.error({
         key: "d",
@@ -146,6 +163,7 @@ export default function Home({ initialData = [] }) {
     }
     messageApi.destroy("agencia");
     if (error === false) {
+      //Si no hubo error enviar mensaje de ok
       messageApi.success({
         key: "datosAgencia",
         style: { fontSize: "calc(0.5rem + 0.5vw)" },
@@ -163,7 +181,7 @@ export default function Home({ initialData = [] }) {
         <Image
           fill
           placeholder="empty"
-          alt="Logo"
+          alt="Logo de agencia"
           src={json.UrlLogo}
           className="globalImage"
           priority={true}

@@ -10,15 +10,17 @@ import styles from "../styles/Steps.module.css";
 export default function StepsHeader(
   props = [procesoCount, terminadoCount, pagadoCount]
 ) {
-  const [anim, setAnim] = useState(false);
-  let startAnim = false;
+  const [anim, setAnim] = useState(false); //Animacion de iconos
+  let startAnim = false; //Estado inicial de animacion
+
   useEffect(() => {
-    //Cambiar anim estado de anim cada x segundos
+    //Metodo que corre cada vez que se tiene que actualizar la animacion
     function getData() {
       startAnim = !startAnim;
       setAnim(startAnim);
     }
     getData();
+    //Cambiar estado de animacion cada x segundos
     const interval = setInterval(() => getData(), 5000);
     return () => {
       clearInterval(interval);

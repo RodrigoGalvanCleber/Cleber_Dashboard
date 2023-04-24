@@ -7,22 +7,22 @@ import {
 import styles from "../styles/Info.module.css";
 
 export default function InfoCard(
-  props = [extra, proceso, orden, linea, placa, color]
+  props = [extra, proceso, orden, linea, placa, color,porcentaje, pagada]
 ) {
   //Escoger el color del header de las tarjetas dependiendo de cual sea la tarjeta
   const colorHeader = () => {
-    if (props.proceso === "terminado") {
+    if (props.proceso === "Terminada") {
       return "#03872D";
-    } else if (props.proceso === "proceso") {
+    } else if (props.proceso === "En proceso") {
       return "#E0C101";
-    } else {
+    } else if(props.proceso === "Pagada" && props.pagada === "T") {
       return "#0A62D5";
     }
   };
 
   //Escoger el Icono a enseñar dependiendo de cual sea la tarjeta
   const IconHeader = () => {
-    if (props.proceso == "terminado") {
+    if (props.proceso === "Terminada") {
       return (
         <CarOutlined
           style={{
@@ -31,7 +31,7 @@ export default function InfoCard(
           }}
         />
       );
-    } else if (props.proceso == "proceso") {
+    } else if (props.proceso === "En proceso") {
       return (
         <ToolOutlined
           style={{
@@ -41,7 +41,7 @@ export default function InfoCard(
           size={50}
         />
       );
-    } else {
+    } else if(props.proceso === "Pagada" && props.pagada === "T"){
       return (
         <DollarCircleOutlined
           style={{
@@ -66,10 +66,10 @@ export default function InfoCard(
 
   //Si se ocupa enseñar el progreso o si no un icono
   function ProgressCheck() {
-    if (props.proceso == "proceso") {
+    if (props.proceso == "En proceso") {
       return (
         <Progress
-          percent={30}
+          percent={props.porcentaje}
           type="circle"
           size={50}
           style={{ fontWeight: "700" }}
