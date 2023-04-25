@@ -8,7 +8,7 @@ import {
 import styles from "../styles/Info.module.css";
 
 export default function InfoCard(
-  props = [extra, proceso, orden, linea, placa, color,porcentaje, pagada]
+  props = [extra, proceso, orden, linea, placa, color,porcentaje, pagadam, estado]
 ) {
   //Escoger el color del header de las tarjetas dependiendo de cual sea la tarjeta
   const colorHeader = () => {
@@ -27,7 +27,7 @@ export default function InfoCard(
       return (
         <CarOutlined
           style={{
-            fontSize: "50px",
+            fontSize: "70px",
             color: "#03872D",
           }}
         />
@@ -36,7 +36,7 @@ export default function InfoCard(
       return (
         <ToolOutlined
           style={{
-            fontSize: "50px",
+            fontSize: "70px",
             color: "#E0C101",
           }}
           size={50}
@@ -46,7 +46,7 @@ export default function InfoCard(
       return (
         <DollarCircleOutlined
           style={{
-            fontSize: "50px",
+            fontSize: "70px",
             color: "#0A62D5",
           }}
         />
@@ -69,18 +69,23 @@ export default function InfoCard(
   function ProgressCheck() {
     if (props.proceso == "En proceso") {
       return (
-        <div style={{width:"100%", justifyContent:"center", display:"flex"}}>
+        <>
+        <Row align="middle" justify="center" style={{height:"100%", justifyContent:"center", display:"flex"}}>
+          <Progress
+            percent={props.porcentaje}
+            type="dashboard"
+            size={80}
+            status="normal"
+            style={{ fontWeight: "700"}}
+            strokeColor="#E4C501"
+            strokeWidth={12}
 
-        <Progress
-          percent={props.porcentaje}
-          type="dashboard"
-          size={80}
-          status="normal"
-          style={{ fontWeight: "700"}}
-          strokeColor="#E4C501"
-          strokeWidth={12}
-        />
-                </div>
+          />
+        </Row>
+        <Row align="middle" justify="center" style={{height:"100%", justifyContent:"center", display:"flex"}}>
+          <label style={{fontSize:"calc(0.3rem + 0.3vw)", textAlign:"center", width:"auto"}}>{props.estado}</label>
+        </Row>
+        </>
 
       );
     } else {

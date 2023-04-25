@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Layout, Row, Carousel, Col, message } from "antd"; //Libreria de componentes
 import ContainerCards from "@/Components/ContainerCards";
 import InfoCard from "@/Components/InfoCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import StepsHeader from "@/Components/StepsHeader"; 
 import { useRouter } from "next/router"; //Next.js
 import useSWR from "swr"; //Libreria para actualizar datos cada x cantidad de tiempp
@@ -61,7 +61,7 @@ export default function Home({ initialData = [] }) {
     fetcher,
     {
       initialData,
-      refreshInterval: 240000,
+      refreshInterval: 60000,
     }
   );
 
@@ -69,6 +69,19 @@ export default function Home({ initialData = [] }) {
   useEffect(() => {
     constructArray();
   }, [data]);
+
+  const carouselRef = useRef();
+
+  useEffect(() => {
+    function getData() {
+     carouselRef.current.next();
+    }
+    getData();
+    const interval = setInterval(() => getData(), 10000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   //Esperar al router para  id de agencia
   useEffect( () => {
@@ -138,6 +151,7 @@ export default function Home({ initialData = [] }) {
                   linea={card.Linea}
                   placa={card.Placa}
                   color={card.Color}
+                  estado = {card.Estado}
                   porcentaje={card.PorcentajeAvance}
                   pagada={card.Pagada}
                 ></InfoCard>
@@ -271,12 +285,8 @@ export default function Home({ initialData = [] }) {
         <div className="globalH100BTrasparent" style={{ width: "100%" }}>
           {/*Carrusel con tarjetas*/}
           <Carousel
-            autoplay={true}
-            infinite={true} 
-            dots={false}
-            effect="scrollx"
+           ref={carouselRef}
             style={{ width: "100%" }}
-            autoplaySpeed={10000}
             className="globalH100BTrasparent"
           >
             {/*Data contiene los diferentes contenedores con las tarjetas*/}
