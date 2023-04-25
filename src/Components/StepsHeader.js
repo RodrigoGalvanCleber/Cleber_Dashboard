@@ -40,7 +40,7 @@ export default function StepsHeader(
             <ToolOutlined
               style={{
                 color: "#E0C101",
-                fontSize: "100px",
+                fontSize: "80px",
                 overflow: "visible",
                 paddingLeft: "40px",
               }}
@@ -57,7 +57,7 @@ export default function StepsHeader(
             <CarOutlined
               style={{
                 color: "#03872D",
-                fontSize: "100px",
+                fontSize: "80px",
               }}
               className={anim ? styles.heartbeat : null}
             />
@@ -72,7 +72,7 @@ export default function StepsHeader(
             <DollarCircleOutlined
               style={{
                 color: "#0A62D5",
-                fontSize: "100px",
+                fontSize: "80px",
                 paddingTop: "5px",
                 paddingBottom: "5px",
               }}

@@ -12,7 +12,7 @@ const { Header, Content } = Layout;
 
 export default function Home({ initialData = [] }) {
   const [agencia, setAgencia] = useState(null);//ID de agencia en url
-  const router = useRouter(); 
+  const router = useRouter();  //Next.js router para obtener parametro en url
   const [dataCards, setData] = useState([]); //Datos de tarjetas de carrusel
   const [json, setJson] = useState([]); //Json de agencia
   const [date, setDate] = useState(); //Fecha actualizacion
@@ -57,11 +57,11 @@ export default function Home({ initialData = [] }) {
 
   //Metodo fetcher corre cada x cantidad de tiempo con liga a id de agencia y fecha
   const { data } = useSWR(
-    `https://hook.integromat.com/evhatg54q5yx0vhj6aw0c3yo492w62ck?IdAgencia=${agencia}&Fecha=2022-03-02`,
+    `https://hook.integromat.com/evhatg54q5yx0vhj6aw0c3yo492w62ck?IdAgencia=${agencia}&Fecha=${new Date().toISOString().split('T')[0]}`,
     fetcher,
     {
       initialData,
-      refreshInterval: 60000,
+      refreshInterval: 240000,
     }
   );
 
@@ -78,27 +78,55 @@ export default function Home({ initialData = [] }) {
     getAgencia();
   }, [router.isReady]);
 
+  function compare( a, b ) {
+    if ( a.NumOS < b.NumOS ){
+      return 1;
+    }
+    if ( a.NumOS > b.NumOS ){
+      return -1;
+    }
+    return 0;
+  }
+
+
   //Construir el carrusel 
   async function constructArray() {
     if (data != undefined) {
+      let result = data.reduce((x, y) => {
+
+        (x[y.Clasificacion.replace(/\s/g, '')] = x[y.Clasificacion.replace(/\s/g, '')] || []).push(y);
+
+        return x;
+
+    }, {});
+    let finalData = [];
+    if(result.Pagada !== undefined){
+      finalData = [...finalData, ...result.Pagada.sort(compare)];
+    }
+    if(result.Terminada !== undefined){
+      finalData = [...finalData, ...result.Terminada.sort(compare)];
+    }
+    if(result.Enproceso !== undefined){
+      finalData = [...finalData, ...result.Enproceso.sort(compare)];
+    }
       const containers = []; //Carruseles
       //Contar cuanto de cada tarjeta hay
       let pCount = 0;
       let tCount = 0;
       let pgCount = 0;
       //Por cada 24 tarjetas hacer carrusel
-      for (let i = 0; i < data.length; i += 24) {
+      for (let i = 0; i < finalData.length; i += 30) {
         //Dividir json en partes de 24
-        let chunk = data.slice(i, i + 24);
+        let chunk = finalData.slice(i, i + 30);
         //Agregar a container las tarjetas con su info
         containers.push(
           <ContainerCards key={i}>
             {chunk.map((card, j) => {
-              if (card.Estado_Orden === "En proceso") {
+              if (card.Clasificacion === "En proceso") {
                 pCount += 1;
-              } else if (card.Estado_Orden === "Terminada") {
+              } else if (card.Clasificacion === "Terminada") {
                 tCount += 1;
-              } else if (card.Estado_Orden === "Pagada") {
+              } else if (card.Clasificacion === "Pagada") {
                 pgCount += 1;
               }
               return (
@@ -205,7 +233,7 @@ export default function Home({ initialData = [] }) {
         {/*Row es todo el header*/}
         <Row>
           {/*Logo tomando 4 de col*/}
-          <Col span={6} style={{ padding: "2%" }}>
+          <Col span={6}>
             <ValidImage></ValidImage>
           </Col>
           {/*Nombre, fecha y steps*/}
@@ -243,8 +271,10 @@ export default function Home({ initialData = [] }) {
         <div className="globalH100BTrasparent" style={{ width: "100%" }}>
           {/*Carrusel con tarjetas*/}
           <Carousel
-            autoplay
+            autoplay={true}
+            infinite={true} 
             dots={false}
+            effect="scrollx"
             style={{ width: "100%" }}
             autoplaySpeed={10000}
             className="globalH100BTrasparent"

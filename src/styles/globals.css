@@ -99,7 +99,9 @@ a {
   height: auto;
   justify-content: space-between;
   box-shadow: 0 0 15px black;
-  padding: 1%;
+  padding: 0%;
+  padding-left: 1%;
+  padding-right: 1%;
 }
 
 .globalLayoutStyle {
@@ -114,6 +116,8 @@ a {
 
 .globalImage {
   object-fit: scale-down;
+  padding-top: 5%;
+  padding-bottom: 5%;
 }
 
 .globalTitleFontSize {

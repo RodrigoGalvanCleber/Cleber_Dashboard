@@ -1,12 +1,11 @@
 .cardStyle {
-  min-width: 280px;
-  max-width: 400px;
-  max-height: 220px;
-  min-height: 0;
-  height: auto;
+  min-width: 300px;
+  max-width: 350px;
+  min-height: 170px;
+  max-height: 200px;
   border: 0;
+  padding: 0;
   box-shadow: rgba(0, 0, 0, 0.3) 5px 5px 8px;
-  flex-shrink: 1;
   flex-grow: 1;
 }
 
@@ -18,23 +17,23 @@
 }
 
 .labelPlacaStyle {
-  font-size: calc(0.5em + 0.5vw);
+  font-size: calc(0.45em + 0.45vw);
   font-weight: bolder;
-  width: 200px;
+  width: auto;
   max-width: 200px;
 }
 
 .rowLineaStyle {
   height: auto;
-  max-height: 80%;
 }
 
 .labelLineaStyle {
-  font-size: calc(0.5em + 0.5vw);
+  font-size: calc(0.45em + 0.45vw);
   font-weight: bolder;
-  max-height: 88%;
-  width: 220px;
-  max-width: 220px;
+  height: auto;
+  max-height: 75px;
+  width: 200px;
+  max-width: 200px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;

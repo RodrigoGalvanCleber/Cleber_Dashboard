@@ -3,6 +3,7 @@ import {
   ToolOutlined,
   CarOutlined,
   DollarCircleOutlined,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 import styles from "../styles/Info.module.css";
 
@@ -15,7 +16,7 @@ export default function InfoCard(
       return "#03872D";
     } else if (props.proceso === "En proceso") {
       return "#E0C101";
-    } else if(props.proceso === "Pagada" && props.pagada === "T") {
+    } else if(props.proceso === "Pagada" || props.pagada === "T") {
       return "#0A62D5";
     }
   };
@@ -41,7 +42,7 @@ export default function InfoCard(
           size={50}
         />
       );
-    } else if(props.proceso === "Pagada" && props.pagada === "T"){
+    } else if(props.proceso === "Pagada" || props.pagada === "T"){
       return (
         <DollarCircleOutlined
           style={{
@@ -68,19 +69,27 @@ export default function InfoCard(
   function ProgressCheck() {
     if (props.proceso == "En proceso") {
       return (
+        <div style={{width:"100%", justifyContent:"center", display:"flex"}}>
+
         <Progress
           percent={props.porcentaje}
-          type="circle"
-          size={50}
-          style={{ fontWeight: "700" }}
+          type="dashboard"
+          size={80}
+          status="normal"
+          style={{ fontWeight: "700"}}
           strokeColor="#E4C501"
-          strokeWidth={10}
+          strokeWidth={12}
         />
+                </div>
+
       );
     } else {
       return (
         <>
+                <div style={{width:"80px", justifyContent:"center", margin:"auto", display:"flex"}}>
+
           <IconHeader></IconHeader>
+          </div>
         </>
       );
     }
@@ -92,7 +101,7 @@ export default function InfoCard(
         title={props.orden}
         className={styles.cardStyle}
         bodyStyle={{
-          padding: "12px",
+          padding: "8px",
           height: "70%",
         }}
         headStyle={{
@@ -108,7 +117,7 @@ export default function InfoCard(
       >
         <Row className={styles.cardRowStyle} align="middle">
           <Col className={styles.colStyle}>
-            <Row style={{ height: "auto", maxHeight: "20%" }}>
+            <Row >
               <label className={styles.labelPlacaStyle}>{props.placa}</label>
             </Row>
             <Row align="middle" className={styles.rowLineaStyle}>
@@ -118,7 +127,7 @@ export default function InfoCard(
               </label>
             </Row>
           </Col>
-          <Col>
+          <Col style={{width:"100%"}}>
             <ProgressCheck />
           </Col>
         </Row>
