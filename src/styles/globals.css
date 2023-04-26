@@ -56,6 +56,19 @@ a {
   background-color: rgba(129, 129, 129, 0.611) !important;
   height: 3px !important;
 }
+.ant-steps.ant-steps-navigation .ant-steps-item::after {
+  height: 40px;
+  width: 40px;
+  border-inline-end: 14px solid rgb(80, 80, 80);
+  border-top: 14px solid rgb(94, 94, 94);
+  animation: shake-horizontal 10s infinite cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+
+}
+
+.ant-steps-item-title {
+  background-color: rgba(0, 0, 0, 0.611) !important;
+  height: 3px !important;
+}
 
 .ant-steps-item-title {
   line-height: 60px !important;
@@ -99,9 +112,7 @@ a {
   height: auto;
   justify-content: space-between;
   box-shadow: 0 0 15px black;
-  padding: 0%;
-  padding-left: 1%;
-  padding-right: 1%;
+  padding: 1%;
 }
 
 .globalLayoutStyle {
@@ -116,8 +127,6 @@ a {
 
 .globalImage {
   object-fit: scale-down;
-  padding-top: 5%;
-  padding-bottom: 5%;
 }
 
 .globalTitleFontSize {
@@ -137,4 +146,29 @@ a {
   color: black;
   opacity: 80%;
   margin: 10px;
+}
+
+
+@keyframes shake-horizontal {
+  0%,
+  100% {
+    transform: translateY(-50%) translateX(0%) rotate(45deg)
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    transform: translateY(-50%) translateX(-10%) rotate(45deg)
+  }
+  20%,
+  40%,
+  60% {
+    transform: translateY(-50%) translateX(10%) rotate(45deg)
+  }
+  80% {
+    transform: translateY(-50%) translateX(8%) rotate(45deg)
+  }
+  90% {
+    transform: translateY(-50%) translateX(-8%) rotate(45deg)
+  }
 }

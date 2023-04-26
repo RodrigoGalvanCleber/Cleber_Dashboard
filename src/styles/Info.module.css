@@ -1,6 +1,6 @@
 .cardStyle {
   min-width: 300px;
-  max-width: 350px;
+  max-width: 320px;
   min-height: 160px;
   max-height: 200px;
   border: 0;
@@ -38,6 +38,19 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3; /* start showing ellipsis when 3rd line is reached */
+  white-space: pre-wrap; /* let the text wrap preserving spaces */
+}
+
+
+.labelEstadoStyle {
+  font-size: calc(0.3rem + 0.3vw);
+  width: 100%;
+  max-width: 60px;
+  text-align:"center";
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* start showing ellipsis when 3rd line is reached */
   white-space: pre-wrap; /* let the text wrap preserving spaces */
 }
 

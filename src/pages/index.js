@@ -147,13 +147,14 @@ export default function Home({ initialData = [] }) {
                 <InfoCard
                   key={card.NumOS}
                   proceso={card.Clasificacion}
-                  orden={card.NumOS}
+                  orden={card.NumOS.replace(/(.{3})/g,"$1 ").slice(0, -1)}
                   linea={card.Linea}
                   placa={card.Placa}
                   color={card.Color}
                   estado = {card.Estado}
                   porcentaje={card.PorcentajeAvance}
                   pagada={card.Pagada}
+                  tipo={card.TipoPago}
                 ></InfoCard>
               );
             })}
@@ -250,13 +251,27 @@ export default function Home({ initialData = [] }) {
           <Col span={6}>
             <ValidImage></ValidImage>
           </Col>
+          <Col span={14}>
+            <Row
+              style={{ justifyContent: "center", overflow: "visible" }}
+            >
+              <StepsHeader
+                procesoCount={procesoCount}
+                terminadoCount={terminadoCount}
+                pagadoCount={pagadoCount}
+              ></StepsHeader>
+            </Row>
+          </Col>
           {/*Nombre, fecha y steps*/}
-          <Col span={18} style={{ paddingTop: "0", overflow: "visible" }}>
+          <Col span={4} style={{ paddingTop: "0", overflow: "visible" }}>
             <Row
               style={{
                 alignContent: "center",
-                justifyContent: "end",
+                justifyContent: "center",
+                width:"100%",
+                height:"100%"
               }}
+              justify="end"
             >
               <label
                 style={{
@@ -268,16 +283,8 @@ export default function Home({ initialData = [] }) {
                 Actualizado: {date}
               </label>
             </Row>
-            <Row
-              style={{ justifyContent: "space-between", overflow: "visible" }}
-            >
-              <StepsHeader
-                procesoCount={procesoCount}
-                terminadoCount={terminadoCount}
-                pagadoCount={pagadoCount}
-              ></StepsHeader>
-            </Row>
-          </Col>
+            </Col>
+           
         </Row>
       </Header>
       {/*Contenido principal*/}

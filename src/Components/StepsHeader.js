@@ -29,7 +29,10 @@ export default function StepsHeader(
 
   return (
     <Steps
-      style={{ overflow: "visible" }}
+      style={{ overflow: "visible", width:"100%" }}
+      type="navigation"
+      current={null}
+      iconPrefix={<CarOutlined/>}
       items={[
         {
           description: (
@@ -40,7 +43,7 @@ export default function StepsHeader(
             <ToolOutlined
               style={{
                 color: "#E0C101",
-                fontSize: "80px",
+                fontSize: "100px",
                 overflow: "visible",
                 paddingLeft: "40px",
               }}
@@ -57,7 +60,7 @@ export default function StepsHeader(
             <CarOutlined
               style={{
                 color: "#03872D",
-                fontSize: "80px",
+                fontSize: "100px",
               }}
               className={anim ? styles.heartbeat : null}
             />
@@ -72,7 +75,7 @@ export default function StepsHeader(
             <DollarCircleOutlined
               style={{
                 color: "#0A62D5",
-                fontSize: "80px",
+                fontSize: "100px",
                 paddingTop: "5px",
                 paddingBottom: "5px",
               }}

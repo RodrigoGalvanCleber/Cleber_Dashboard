@@ -4,11 +4,13 @@ import {
   CarOutlined,
   DollarCircleOutlined,
   CheckCircleOutlined,
+  MobileOutlined,
+  GlobalOutlined,
 } from "@ant-design/icons";
 import styles from "../styles/Info.module.css";
 
 export default function InfoCard(
-  props = [extra, proceso, orden, linea, placa, color,porcentaje, pagadam, estado]
+  props = [extra, proceso, orden, linea, placa, color,porcentaje, pagadam, estado, tipo]
 ) {
   //Escoger el color del header de las tarjetas dependiendo de cual sea la tarjeta
   const colorHeader = () => {
@@ -27,30 +29,51 @@ export default function InfoCard(
       return (
         <CarOutlined
           style={{
-            fontSize: "70px",
+            fontSize: "60px",
             color: "#03872D",
           }}
         />
+       
       );
     } else if (props.proceso === "En proceso") {
       return (
         <ToolOutlined
           style={{
-            fontSize: "70px",
+            fontSize: "60px",
             color: "#E0C101",
           }}
           size={50}
         />
       );
     } else if(props.proceso === "Pagada" || props.pagada === "T"){
+      if(props.tipo === null){
       return (
         <DollarCircleOutlined
           style={{
-            fontSize: "70px",
+            fontSize: "60px",
             color: "#0A62D5",
           }}
         />
       );
+    } else if(props.tipo === "quiosco"){
+      return (
+        <MobileOutlined
+          style={{
+            fontSize: "60px",
+            color: "#0A62D5",
+          }}
+        />
+      );
+    } else if(props.tipo === "pago_web"){
+      return (
+        <GlobalOutlined
+          style={{
+            fontSize: "60px",
+            color: "#0A62D5",
+          }}
+        />
+      );
+    }
     }
   };
 
@@ -74,7 +97,7 @@ export default function InfoCard(
           <Progress
             percent={props.porcentaje}
             type="dashboard"
-            size={80}
+            size={60}
             status="normal"
             style={{ fontWeight: "700"}}
             strokeColor="#E4C501"
@@ -83,7 +106,7 @@ export default function InfoCard(
           />
         </Row>
         <Row align="middle" justify="center" style={{height:"100%", justifyContent:"center", display:"flex"}}>
-          <label style={{fontSize:"calc(0.3rem + 0.3vw)", textAlign:"center", width:"auto"}}>{props.estado}</label>
+          <label style={{fontSize:"calc(0.3rem + 0.3vw)", textAlign:"center", width:"80px", maxWidth:"80px"}}>{props.estado}</label>
         </Row>
         </>
 
@@ -91,10 +114,13 @@ export default function InfoCard(
     } else {
       return (
         <>
-                <div style={{width:"80px", justifyContent:"center", margin:"auto", display:"flex"}}>
+        <Row align="middle" justify="center" style={{height:"100%", justifyContent:"center", display:"flex"}}>
 
           <IconHeader></IconHeader>
-          </div>
+          </Row>
+         <Row align="middle" justify="center" style={{height:"100%", width:"100%", marginTop:"5px", justifyContent:"center", display:"flex"}}>
+         <label style={{fontSize:"calc(0.3rem + 0.3vw)", textAlign:"center", width:"80px", maxWidth:"80px"}}>{props.estado}</label>
+       </Row>
         </>
       );
     }
@@ -107,7 +133,8 @@ export default function InfoCard(
         className={styles.cardStyle}
         bodyStyle={{
           padding: "8px",
-          height: "70%",
+          height:"70%"
+
         }}
         headStyle={{
           backgroundColor: colorHeader(),
