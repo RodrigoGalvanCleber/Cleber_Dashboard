@@ -1,17 +1,18 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Layout, Row, Carousel, Col, message } from "antd"; //Libreria de componentes
+import { Layout, Row, Carousel, Col, message, Spin } from "antd"; //Libreria de componentes
 import ContainerCards from "@/Components/ContainerCards";
 import InfoCard from "@/Components/InfoCard";
 import { useEffect, useState, useRef } from "react";
 import StepsHeader from "@/Components/StepsHeader"; 
 import { useRouter } from "next/router"; //Next.js
 import useSWR from "swr"; //Libreria para actualizar datos cada x cantidad de tiempp
+import { CheckCircleOutlined, CheckOutlined, LoadingOutlined } from "@ant-design/icons";
 
 const { Header, Content } = Layout;
 
 export default function Home({ initialData = [] }) {
-  const [agencia, setAgencia] = useState(null);//ID de agencia en url
+  const [agencia, setAgencia] = useState([{}]);//ID de agencia en url
   const router = useRouter();  //Next.js router para obtener parametro en url
   const [dataCards, setData] = useState([]); //Datos de tarjetas de carrusel
   const [json, setJson] = useState([]); //Json de agencia
@@ -20,34 +21,20 @@ export default function Home({ initialData = [] }) {
   const [terminadoCount, setTerminadoCount] = useState(0); //Counter tarjetas terminado
   const [pagadoCount, setPagadoCount] = useState(0); //Counter tarjetas pagado
   const [messageApi, contextHolder] = message.useMessage(); //Variable que controla mensajes a desplegar
-
+  const [loading, setLoading] = useState(true);
   //Fetcher para actualizar los datos cada x cantidad de tiempo
   async function fetcher(url) {
     //Si la agencia (ID en url) no es null
     if(agencia !== null){
-      //Mensaje de datos cargando
-      messageApi.open({
-        key: "datos",
-        style: { fontSize: "calc(0.5rem + 0.5vw)" },
-        type: "loading",
-        content: "Actualizando datos..",
-        duration: 0,
-      });
+      setLoading(true);
       try {
         setDate(new Date().toLocaleString()); //Actualizar la fecha
         //Regresar datos de json
         const result = await fetch(url)
           .then((r) => r.json())
           .then((data) => data);
-        //Mensaje de datos recuperados
-        messageApi.destroy("datos");
-        messageApi.success({
-          key: "datosActualizados",
-          style: { fontSize: "calc(0.5rem + 0.5vw)" },
-          type: "loading",
-          content: "Datos actualizados correctamente.",
-          duration: 2.5,
-        });
+        //Datos recuperados
+        setLoading(false);
         return result;  //Retornar el json con todos registros a enseñar
       } catch (e) {
         console.log(e);
@@ -175,14 +162,6 @@ export default function Home({ initialData = [] }) {
   //Obtener la agencia del url
   async function getAgencia() {
     let error = false;
-    //Mensaje de obtener datos
-    messageApi.open({
-      key: "agencia",
-      style: { fontSize: "calc(0.5rem + 0.5vw)" },
-      type: "loading",
-      content: "Cargando agencia..",
-      duration: 0,
-    });
     //Obtener agencia mediante el id en el URL
     const { q } = router.query;
     setAgencia(q); //Set de la agenicia para url de webhook
@@ -195,23 +174,11 @@ export default function Home({ initialData = [] }) {
       setJson(data); //Json de agencia
     } catch (e) {
       //Mensaje de error
-      error = true;
       messageApi.error({
         key: "d",
         style: { fontSize: "calc(0.5rem + 0.5vw)" },
         type: "loading",
         content: "Datos de agencia no pudieron ser recuperados.",
-        duration: 2.5,
-      });
-    }
-    messageApi.destroy("agencia");
-    if (error === false) {
-      //Si no hubo error enviar mensaje de ok
-      messageApi.success({
-        key: "datosAgencia",
-        style: { fontSize: "calc(0.5rem + 0.5vw)" },
-        type: "loading",
-        content: "Datos de agencia recuperados.",
         duration: 2.5,
       });
     }
@@ -275,12 +242,21 @@ export default function Home({ initialData = [] }) {
             >
               <label
                 style={{
+                  fontSize: "calc(0.6rem + 0.6vw)",
+                  fontWeight: "900",
+                  opacity:"80%",
+                }}
+              >
+                {json.NombreAgencia}
+              </label>
+              <label
+                style={{
                   fontSize: "calc(0.4rem + 0.5vw)",
                   fontWeight: "850",
                   opacity: "70%",
                 }}
               >
-                Actualizado: {date}
+                Actualizado: {date} <Spin indicator={<LoadingOutlined style={{color:"black", opacity:"70%"}}/>} spinning={loading} /> <Spin indicator={<CheckCircleOutlined  style={{color:"black", opacity:"70%"}}/>} spinning={!loading} /> 
               </label>
             </Row>
             </Col>
@@ -292,8 +268,10 @@ export default function Home({ initialData = [] }) {
         <div className="globalH100BTrasparent" style={{ width: "100%" }}>
           {/*Carrusel con tarjetas*/}
           <Carousel
+          
            ref={carouselRef}
             style={{ width: "100%" }}
+            dots={false}
             className="globalH100BTrasparent"
           >
             {/*Data contiene los diferentes contenedores con las tarjetas*/}

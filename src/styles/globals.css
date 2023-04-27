@@ -95,11 +95,16 @@ a {
 .slick-list {
   height: 100% !important;
   max-height: 100% !important;
+  transition-delay: 10ms !important;
+
 }
+
 
 .slick-track {
   height: 100% !important;
   max-height: 100% !important;
+  transition-delay: 10ms !important;
+
 }
 
 .slick-slide > div {

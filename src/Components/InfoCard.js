@@ -35,16 +35,6 @@ export default function InfoCard(
         />
        
       );
-    } else if (props.proceso === "En proceso") {
-      return (
-        <ToolOutlined
-          style={{
-            fontSize: "60px",
-            color: "#E0C101",
-          }}
-          size={50}
-        />
-      );
     } else if(props.proceso === "Pagada" || props.pagada === "T"){
       if(props.tipo === null){
       return (
@@ -106,7 +96,7 @@ export default function InfoCard(
           />
         </Row>
         <Row align="middle" justify="center" style={{height:"100%", justifyContent:"center", display:"flex"}}>
-          <label style={{fontSize:"calc(0.3rem + 0.3vw)", textAlign:"center", width:"80px", maxWidth:"80px"}}>{props.estado}</label>
+          <label className={styles.labelEstadoStyle} style={{fontSize:"calc(0.3rem + 0.3vw)", textAlign:"center", width:"85px", maxWidth:"85px"}}>{props.estado}</label>
         </Row>
         </>
 
@@ -119,7 +109,7 @@ export default function InfoCard(
           <IconHeader></IconHeader>
           </Row>
          <Row align="middle" justify="center" style={{height:"100%", width:"100%", marginTop:"5px", justifyContent:"center", display:"flex"}}>
-         <label style={{fontSize:"calc(0.3rem + 0.3vw)", textAlign:"center", width:"80px", maxWidth:"80px"}}>{props.estado}</label>
+         <label className={styles.labelEstadoStyle}  style={{fontSize:"calc(0.3rem + 0.3vw)", textAlign:"center", width:"85px", maxWidth:"85px"}}>{props.estado}</label>
        </Row>
         </>
       );
@@ -138,6 +128,8 @@ export default function InfoCard(
         }}
         headStyle={{
           backgroundColor: colorHeader(),
+          width:"auto",
+          height:"auto",
           fontSize: "calc(0.9rem + 0.9vw)",
           fontWeight: "600",
           textAlign: "center",
