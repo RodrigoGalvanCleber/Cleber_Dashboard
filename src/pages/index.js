@@ -35,7 +35,7 @@ export default function Home({ initialData = [] }) {
         const result = await fetch(url)
           .then((r) => r.json())
           .then((data) => data);
-        //Datos recuperados
+        //Datos recuperadoas
         setLoading(false);
         return result;  //Retornar el json con todos registros a enseñar
       } catch (e) {

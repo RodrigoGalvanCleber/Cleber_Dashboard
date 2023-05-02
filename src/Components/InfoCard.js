@@ -109,7 +109,7 @@ export default function InfoCard(
           <IconHeader></IconHeader>
           </Row>
          <Row align="middle" justify="center" style={{height:"100%", width:"100%", marginTop:"5px", justifyContent:"center", display:"flex"}}>
-         <label className={styles.labelEstadoStyle}  style={{fontSize:"calc(0.3rem + 0.3vw)", textAlign:"center", width:"85px", maxWidth:"85px"}}>{props.proceso === "En proceso" ? props.estado : "TERMINADO"}</label>
+         <label className={styles.labelEstadoStyle}  style={{fontSize:"calc(0.3rem + 0.3vw)", textAlign:"center", width:"85px", maxWidth:"85px"}}>{props.proceso === "En proceso" ? props.estado : "Terminado"}</label>
        </Row>
         </>
       );
