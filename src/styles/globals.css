@@ -54,14 +54,13 @@ a {
 }
 .ant-steps-item-title:after {
   background-color: rgba(129, 129, 129, 0.611) !important;
-  height: 3px !important;
 }
 .ant-steps.ant-steps-navigation .ant-steps-item::after {
   height: 40px;
   width: 40px;
   border-inline-end: 14px solid rgb(80, 80, 80);
   border-top: 14px solid rgb(94, 94, 94);
-  animation: shake-horizontal 10s infinite cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+  animation: shake-horizontal 15s infinite cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 
 }
 
@@ -71,7 +70,6 @@ a {
 }
 
 .ant-steps-item-title {
-  line-height: 60px !important;
   margin: 15px;
 }
 
@@ -96,7 +94,6 @@ a {
   height: 100% !important;
   max-height: 100% !important;
   transition-delay: 10ms !important;
-
 }
 
 
@@ -104,7 +101,6 @@ a {
   height: 100% !important;
   max-height: 100% !important;
   transition-delay: 10ms !important;
-
 }
 
 .slick-slide > div {
@@ -163,17 +159,32 @@ a {
   30%,
   50%,
   70% {
-    transform: translateY(-50%) translateX(-10%) rotate(45deg)
+    transform: translateY(-50%) translateX(-30%) rotate(45deg)
   }
   20%,
   40%,
   60% {
-    transform: translateY(-50%) translateX(10%) rotate(45deg)
+    transform: translateY(-50%) translateX(30%) rotate(45deg)
   }
   80% {
-    transform: translateY(-50%) translateX(8%) rotate(45deg)
+    transform: translateY(-50%) translateX(20%) rotate(45deg)
   }
   90% {
-    transform: translateY(-50%) translateX(-8%) rotate(45deg)
+    transform: translateY(-50%) translateX(-20%) rotate(45deg)
   }
+}
+
+
+.agenciaTextStyle {
+  font-size: calc(1rem + 1vw);
+  font-weight: 900;
+  line-height:45px;
+  opacity:80%;
+  text-align: center;
+  height: auto;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* start showing ellipsis when 3rd line is reached */
+  white-space: pre-wrap; /* let the text wrap preserving spaces */
 }

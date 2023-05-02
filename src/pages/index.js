@@ -22,6 +22,8 @@ export default function Home({ initialData = [] }) {
   const [pagadoCount, setPagadoCount] = useState(0); //Counter tarjetas pagado
   const [messageApi, contextHolder] = message.useMessage(); //Variable que controla mensajes a desplegar
   const [loading, setLoading] = useState(true);
+  const [jsonHorario, setJsonHorario] = useState([{}]);
+  const [active, setActive] = useState(false);
   //Fetcher para actualizar los datos cada x cantidad de tiempo
   async function fetcher(url) {
     //Si la agencia (ID en url) no es null
@@ -59,7 +61,43 @@ export default function Home({ initialData = [] }) {
 
   const carouselRef = useRef();
 
+    /*
+  function getNewDate(){
+    //fetch("https://hook.integromat.com/053kxghp18mr9zlktqmrxf4oc497fzzf/?idAgencia=100")
+    //.then((res) => res.json())
+    //.then((data) => setJsonHorario(data));
+  }
+
   useEffect(() => {
+    if(jsonHorario !== [{}]){
+      let currentTime = new Date (jsonHorario.FechaActual);
+      let inicialTime = new Date (jsonHorario.HorarioInicial);
+      let finalTime = new Date (jsonHorario.HorarioFinal);
+
+      if(currentTime < inicialTime || currentTime > finalTime){
+        setActive(false);
+        let mili = Math.abs(currentTime.getTime() - inicialTime.getTime());
+        console.log("Fuera horario" + mili);
+        let myVar = setTimeout(() => {
+          getNewDate();
+        }, mili);
+      } else {
+        setActive(true);
+        let mili = Math.abs(currentTime.getTime() - finalTime.getTime());
+        let myVar = setTimeout(() => {
+          getNewDate();
+        }, mili);
+      }
+    }
+  }, [jsonHorario]);
+*/
+
+  useEffect(() => {
+    /*
+    fetch("https://hook.integromat.com/053kxghp18mr9zlktqmrxf4oc497fzzf/?idAgencia=100")
+    .then((res) => res.json())
+    .then((data) => setJsonHorario(data));
+    */
     function getData() {
      carouselRef.current.next();
     }
@@ -68,6 +106,7 @@ export default function Home({ initialData = [] }) {
     return () => {
       clearInterval(interval);
     };
+
   }, []);
 
   //Esperar al router para  id de agencia
@@ -218,7 +257,7 @@ export default function Home({ initialData = [] }) {
           <Col span={6}>
             <ValidImage></ValidImage>
           </Col>
-          <Col span={14}>
+          <Col span={12}>
             <Row
               style={{ justifyContent: "center", overflow: "visible" }}
             >
@@ -230,7 +269,7 @@ export default function Home({ initialData = [] }) {
             </Row>
           </Col>
           {/*Nombre, fecha y steps*/}
-          <Col span={4} style={{ paddingTop: "0", overflow: "visible" }}>
+          <Col span={6} style={{ paddingTop: "0", overflow: "visible" }}>
             <Row
               style={{
                 alignContent: "center",
@@ -241,19 +280,17 @@ export default function Home({ initialData = [] }) {
               justify="end"
             >
               <label
-                style={{
-                  fontSize: "calc(0.6rem + 0.6vw)",
-                  fontWeight: "900",
-                  opacity:"80%",
-                }}
+                className="agenciaTextStyle"
               >
                 {json.NombreAgencia}
               </label>
               <label
                 style={{
-                  fontSize: "calc(0.4rem + 0.5vw)",
+                  fontSize: "calc(0.35rem + 0.35vw)",
                   fontWeight: "850",
                   opacity: "70%",
+                  lineHeight:"30px",
+                  marginTop:"10px",
                 }}
               >
                 Actualizado: {date} <Spin indicator={<LoadingOutlined style={{color:"black", opacity:"70%"}}/>} spinning={loading} /> <Spin indicator={<CheckCircleOutlined  style={{color:"black", opacity:"70%"}}/>} spinning={!loading} /> 
